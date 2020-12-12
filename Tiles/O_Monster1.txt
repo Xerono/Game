@@ -1,0 +1,7 @@
+Monster1
+Monster
+255
+0
+0
+M
+False

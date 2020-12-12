@@ -42,7 +42,7 @@ def set_player(Field,x,y):
                 return Field
             if Field[xc][yc].passable:
                 Possible_Passable = Field[xc][yc]
-    # In case initial placement is on inpassible terrain
+    # In case initial placement is on inpassable terrain
     if (not Field[x][y].passable):
             Field[x][y] = Possible_Passable
     for object_tile in Objects:
@@ -68,5 +68,12 @@ def get_last_tile():
 
 def set_last_tile(tile):
     Last_Tile = tile
+
+def set_monster(Field, x, y, Direction, Monster):
+    if Field[x][y].passable:
+        Field[x][y] = Monster.Tile
+        Monster.Position = (x,y)
+        Monster.Direction = Direction
+        return(Field, Monster)
     
     

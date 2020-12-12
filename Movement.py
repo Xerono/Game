@@ -42,6 +42,8 @@ def move_player(Field, Player, key):
                 Field = Map.set_player(Field, NewX, NewY)       
                 Player.Position = (NewX, NewY)
                 Player.direction = NewDir
+        if Field[NewX][NewY].clas == "Monster":
+            print("Fight!")
     return (Field, Player)
         
                 
