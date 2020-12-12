@@ -23,17 +23,25 @@ def move_player(Field, Player, key):
                     NewY = PlayerY
                     NewDir = "Right"
                 else:
-                    pass
-                        
-    if NewY < 0 or NewY >= len(Field[0]) or NewX < 0 or NewX >= len(Field) or (not Field[NewX][NewY].passable):
+                    # Should never happen
+                    print("Something went wrong: move_player, " + str(key))
+                    return (Field, Player)
+    if NewY < 0 or NewY >= len(Field[0]) or NewX < 0 or NewX >= len(Field):
+        #OOB
         pass
     else:
-        LastTile = Map.get_last_tile()
-        Map.set_last_tile(Field[NewX][NewY])
-        Field[PlayerX][PlayerY] = LastTile
-        Field = Map.set_player(Field, NewX, NewY)       
-        Player.Position = (NewX, NewY)
-        Player.direction = NewDir
+        if Field[NewX][NewY].clas == "Ground":
+            # Target tile contains ground
+            if (not Field[NewX][NewY].passable):
+                #Non-passable terrain
+                pass
+            else:
+                LastTile = Map.get_last_tile()
+                Map.set_last_tile(Field[NewX][NewY])
+                Field[PlayerX][PlayerY] = LastTile
+                Field = Map.set_player(Field, NewX, NewY)       
+                Player.Position = (NewX, NewY)
+                Player.direction = NewDir
     return (Field, Player)
         
                 

@@ -12,6 +12,7 @@ def main():
     PlayerX = 1
     PlayerY = 0
     Running = True
+    
 
 
     Field = Map.create_random_map(Screen_Height, Screen_Width, Blocksize)
@@ -19,6 +20,7 @@ def main():
 
     Player = Classes.new_player("Player", PlayerX, PlayerY, "Up")
     Screen = pygame.display.set_mode((Screen_Height, Screen_Width))
+    pygame.key.set_repeat(100)
     Map.draw_map(Screen, Field)
     
     View = "Map"
