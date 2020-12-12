@@ -1,8 +1,9 @@
 import os
 
 class tile():
-    def __init__(self, name, color, desc, passable):
+    def __init__(self, name, clas, color, desc, passable):
         self.name = name
+        self.clas = clas
         self.color = color
         self.desc = desc
         self.passable = passable
@@ -27,7 +28,7 @@ def load_tiles():
                         print("Error in tile loading: File " + TileFile + " has a duplicate name (same as " + str(TF) + "): " + name)
                         break
                 else:
-                    Tile = tile(all_lines[0], (int(all_lines[1]), int(all_lines[2]), int(all_lines[3])), all_lines[4], "True" == all_lines[5])
+                    Tile = tile(all_lines[0], all_lines[1], (int(all_lines[2]), int(all_lines[3]), int(all_lines[4])), all_lines[5], "True" == all_lines[6])
                     Namelist.append((TileFile, all_lines[0]))
                     TilesData.append(Tile)
     return TilesData
@@ -48,7 +49,7 @@ def load_objects():
                         print("Error in tile loading: File " + TileFile + " has a duplicate name (same as " + str(TF) + "): " + name)
                         break
                 else:
-                    Tile = tile(all_lines[0], (int(all_lines[1]), int(all_lines[2]), int(all_lines[3])), all_lines[4], "True" == all_lines[5])
+                    Tile = tile(all_lines[0], all_lines[1], (int(all_lines[2]), int(all_lines[3]), int(all_lines[4])), all_lines[5], "True" == all_lines[6])
                     Namelist.append((TileFile, all_lines[0]))
                     TilesData.append(Tile)
     return TilesData    
