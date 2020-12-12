@@ -8,6 +8,9 @@ Objects = Tile.load_objects()
 
 def create_random_map(Height, Width, Blocksize):
     global Block_Size
+    global FieldSizeX
+    global FieldSizeY
+    Block_Size = Blocksize
     FieldSizeX = int(Height/Blocksize)
     FieldSizeY = int(Width/Blocksize)
     Field = []
@@ -21,23 +24,27 @@ def create_random_map(Height, Width, Blocksize):
                 Field[x][y] = Tiles[0]
             else:
                 Field[x][y] = Tiles[1]
-    Block_Size = Blocksize
     return Field
 
 def print_map(Field):
-    for x in range(len(Field)):
-        for y in range(len(Field[0])):
+    for y in range(FieldSizeY):
+        for x in range(FieldSizeX):
             print(Field[x][y].desc, end = " ")
         print()
 
 
 def set_player(Field,x,y):
     global Last_Tile
-    for xc in range(len(Field)):
-        for yc in range(len(Field[0])):
+    for xc in range(FieldSizeX):
+        for yc in range(FieldSizeY):
             if Field[xc][yc].desc == "P":
                 print("Error - There already is a player on (" + str(xc) + ", " + str(yc) + ").")
                 return Field
+            if Field[xc][yc].passable:
+                Possible_Passable = Field[xc][yc]
+    # In case initial placement is on inpassible terrain
+    if (not Field[x][y].passable):
+            Field[x][y] = Possible_Passable
     for object_tile in Objects:
         if object_tile.name == "Player":
             Last_Tile = Field[x][y]
@@ -51,8 +58,8 @@ def draw_tile(Screen, x, y, Field):
 
 
 def draw_map(Screen, Field):
-    for x in range(len(Field)):
-        for y in range(len(Field[0])):
+    for x in range(FieldSizeX):
+        for y in range(FieldSizeY):
             draw_tile(Screen, x, y, Field)
     pygame.display.update()
 
