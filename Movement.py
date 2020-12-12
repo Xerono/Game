@@ -2,22 +2,26 @@ import pygame
 import Map
 
 def move_player(Field, Player, key):
-    (PlayerX, PlayerY) = Player
+    (PlayerX, PlayerY) = Player.Position
     if key == pygame.K_UP:
         NewX = PlayerX
         NewY = PlayerY - 1
+        NewDir = "Up"
     else:
         if key == pygame.K_DOWN:
             NewX = PlayerX
             NewY = PlayerY + 1
+            NewDir = "Down"
         else:
             if key == pygame.K_LEFT:
                 NewX = PlayerX - 1
                 NewY = PlayerY
+                NewDir = "Left"
             else:
                 if key == pygame.K_RIGHT:
                     NewX = PlayerX + 1
                     NewY = PlayerY
+                    NewDir = "Right"
                 else:
                     pass
                         
@@ -28,7 +32,8 @@ def move_player(Field, Player, key):
         Map.set_last_tile(Field[NewX][NewY])
         Field[PlayerX][PlayerY] = LastTile
         Field = Map.set_player(Field, NewX, NewY)       
-        Player = (NewX, NewY)
+        Player.Position = (NewX, NewY)
+        Player.direction = NewDir
     return (Field, Player)
         
                 
