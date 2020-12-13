@@ -4,3 +4,4 @@ class Player():
         self.Position = (x,y)
         self.Direction = direction
         self.Tile = Tile
+        self.Party = []

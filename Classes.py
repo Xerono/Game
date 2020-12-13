@@ -14,6 +14,7 @@ def new_player(name, x, y, direction):
     return player
     
 def new_monster(species, Level):
+    Tile = ""
     for obj in Map.Objects:
         if obj.name == species:
             Tile = obj
@@ -23,3 +24,6 @@ def new_monster(species, Level):
         print("Error - No tile found for object '" + str(species) + "'")
     return Monster
 
+def catch_monster(Monster, Nick, Loc, DT):
+    cMonster = Monsters.CaughtMonster(Monster, Nick, Loc, DT)
+    return cMonster

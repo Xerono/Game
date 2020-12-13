@@ -2,24 +2,20 @@ import os
 
 NumberOfAttacks = 4
 
+
 class Monster:
-    def __init__(self, Species, Typ1, Typ2, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile):
+    def __init__(self, Species, Type1, Type2, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile):
         self.Species = Species
-        self.Typ1 = Typ1
-        if Typ2 == "":
-            self.Typ2 = None
+        self.Type1 = Type1
+        if Type2 == "":
+            self.Type2 = None
         else:
-            self.Typ2 = Typ2
+            self.Type2 = Type2
         self.Position = ""
         self.Direction = ""
-        self.Atk = Atk
-        self.Def = Def
-        self.MAtk = MAtk
-        self.MDef = MDef
-        self.Speed = Speed
+        self.Stats = (Atk, Def, MAtk, MDef, Speed)
         self.Attacks = Attacks
         self.Level = Level
-        self.Name = ""
         CurAts = []
         for Att in Attacks:
             (ALevel, Attack) = Att
@@ -27,6 +23,21 @@ class Monster:
                 CurAts.append(Attack)
         self.CurrentAttacks = CurAts[-NumberOfAttacks:]
         self.Tile = Tile
+
+class CaughtMonster(Monster):
+    def __init__(self, Monster, Nickname, LocationID, Datetime):
+        self.Species = Monster.Species
+        self.Type1 = Monster.Type1
+        self.Type2 = Monster.Type2
+        self.Stats = Monster.Stats
+        self.Attacks = Monster.Attacks
+        self.CurrentAttacks = Monster.CurrentAttacks
+        self.Tile = Monster.Tile
+        self.Nickname = Nickname
+        self.CaughtLoc = LocationID
+        self.CaughtTime = Datetime
+        
+    
 
 Path_To_Monsters = os.getcwd() + "/ClassFiles/Monster"
 Path_To_Attacks = Path_To_Monsters + "/Attacklist"
@@ -59,9 +70,15 @@ def load_monsters():
     return Monsterlist
 
 
+Monsterlist = load_monsters()
+
 def new_monster(MonsterSpecies, Level, Tile):
-    for (Species, Type1, Type2, Atk, Def, MAtk, MDef, Speed, Attacks) in load_monsters():
+    for (Species, Type1, Type2, Atk, Def, MAtk, MDef, Speed, Attacks) in Monsterlist:
         if Species == MonsterSpecies:
             MonsterRet = Monster(Species, Type1, Type2, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile)
             break
     return MonsterRet
+
+def caught(Monster, Nick, Loc, DT):
+    CaughtMonster = CaughtMonster(Monster, Nick, Loc, DT)
+    return CaughtMonster
