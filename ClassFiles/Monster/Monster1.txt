@@ -1,6 +1,8 @@
 Monster1
+2
 Darkness
 
+10
 1
 2
 3

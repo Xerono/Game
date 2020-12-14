@@ -1,5 +1,6 @@
 import pygame
 import Map
+import Battle
 
 def move_player(Field, Player, key):
     (PlayerX, PlayerY) = Player.Position
@@ -30,20 +31,24 @@ def move_player(Field, Player, key):
         #OOB
         pass
     else:
-        if Field[NewX][NewY].clas == "Ground":
+        if Field[NewX][NewY][0].clas == "Ground":
             # Target tile contains ground
-            if (not Field[NewX][NewY].passable):
+            if (not Field[NewX][NewY][0].passable):
                 #Non-passable terrain
                 pass
             else:
-                LastTile = Map.get_last_tile()
-                Map.set_last_tile(Field[NewX][NewY])
-                Field[PlayerX][PlayerY] = LastTile
-                Field = Map.set_player(Field, NewX, NewY)       
+                LastTile = Player.Last_Tile
                 Player.Position = (NewX, NewY)
                 Player.direction = NewDir
-        if Field[NewX][NewY].clas == "Monster":
-            print("Fight!")
+                Field[PlayerX][PlayerY] = LastTile
+                (Field, Player) = Map.set_player(Field, Player)
+
+        else:
+            if Field[NewX][NewY][0].clas == "Monster":
+                OldTile = Field[NewX][NewY][1].OldTile
+                BattleScreen = Battle.create_battle_screen(Player, [Field[NewX][NewY]], Map.Block_Size, Map.FieldSizeX, Map.FieldSizeY)
+                Battle.Start_battle(BattleScreen)
+                Field[NewX][NewY] = OldTile
     return (Field, Player)
         
                 

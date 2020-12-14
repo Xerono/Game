@@ -1,6 +1,8 @@
 Starter
+1
 Light
 Grass
+10
 100
 200
 300
