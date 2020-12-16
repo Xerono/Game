@@ -14,7 +14,7 @@ import pickle
 Screen_Height = 1000
 Screen_Width = 800
 Blocksize = 100
-
+Map.init_map(Screen_Height, Screen_Width, Blocksize)
 
 
 def naming():
@@ -42,16 +42,22 @@ def game_first_start():
         
     Journey_Start = time.time()   
     
-    PlayerX = 1
-    PlayerY = 0
-    PlayerID = random.randint(0, 9999999999)
+    PlayerX = 2
+    PlayerY = 2
     MapID = 1
+
+    PlayerID = random.randint(0, 9999999999)
+    
     Player = Classes.new_player(PlayerName, PlayerID, MapID, PlayerX, PlayerY, "Up", Journey_Start)
     Starter = Classes.catch_monster(Classes.new_monster("Starter", 1), Player, StarterName, 1, Journey_Start)
     Player = Monster.put_monster_in_party(Starter, Player)
 
-    Field = Map.create_random_map(Screen_Height, Screen_Width, Blocksize)
-    (Field, Player) = Map.set_player(Field, Player)
+    Field = Map.load_map(Player, MapID)
+    try:
+        (Field, Player) = Map.set_player(Field, Player, MapID, PlayerX, PlayerY)
+    except:
+        print("Error: Setting of Player on Map " + str(MapID) + " failed.")
+        sys.exit()
     Saves.save_game(Field, Player)
     return (Player, Field)
 
@@ -97,15 +103,23 @@ def main(MapScreen, Field, Player):
 
 
 
-saves = Saves.get_num_of_saves()
-if saves == 0:
-    (Player, Field) = game_first_start()
-else:
-    print("New game or load old save? new/old")
-    neworold = input()
-    if neworold == "new":
+
+def game_init():
+    saves = Saves.get_num_of_saves()
+    if saves == 0:
         (Player, Field) = game_first_start()
     else:
-        (Player, Field) = Saves.load_game()
-Screen = game_init_screen(Field)
-main(Screen, Field, Player)
+        print("New game or load old save? new/old")
+        neworold = input()
+        if neworold == "new":
+            (Player, Field) = game_first_start()
+        else:
+            PF = Saves.load_game()
+            if PF:
+                (Player, Field) = PF
+            else:
+                game_init()
+    Screen = game_init_screen(Field)
+    main(Screen, Field, Player)
+
+game_init()

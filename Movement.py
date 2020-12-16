@@ -24,9 +24,9 @@ def move_player(Field, Player, key):
                     NewY = PlayerY
                     NewDir = "Right"
                 else:
-                    # Should never happen
-                    print("Something went wrong: move_player, " + str(key))
-                    return (Field, Player)
+                    NewX = PlayerX
+                    NewY = PlayerY
+                    NewDir = Player.Direction
     if NewY < 0 or NewY >= len(Field[0]) or NewX < 0 or NewX >= len(Field):
         #OOB
         pass
@@ -37,18 +37,24 @@ def move_player(Field, Player, key):
                 #Non-passable terrain
                 pass
             else:
-                LastTile = Player.Last_Tile
-                Player.Position = (NewX, NewY)
-                Player.direction = NewDir
-                Field[PlayerX][PlayerY] = LastTile
-                (Field, Player) = Map.set_player(Field, Player)
+                if Field[NewX][NewY][1]:
+                    Object = Field[NewX][NewY][1]
+                    if Object[0] == "Portal":
+                        (Field, Player) = Map.set_player(Field, Player, Object[1], Object[2], Object[3])
+                else:
+                    LastTile = Player.Last_Tile
+                    Player.Position = (NewX, NewY)
+                    Player.direction = NewDir
+                    Field[PlayerX][PlayerY] = LastTile
+                    (Field, Player) = Map.set_player(Field, Player, Player.Current_Map, NewX, NewY)
 
         else:
             if Field[NewX][NewY][0].clas == "Monster":
                 OldTile = Field[NewX][NewY][1].OldTile
                 BattleScreen = Battle.create_battle_screen(Player, [Field[NewX][NewY]], Map.Block_Size, Map.FieldSizeX, Map.FieldSizeY)
-                Battle.Start_battle(BattleScreen)
+                Battle.Start_battle(BattleScreen, Player, [Field[NewX][NewY][1]])
                 Field[NewX][NewY] = OldTile
+                (Field, Player) = move_player(Field, Player, key)
     return (Field, Player)
         
                 

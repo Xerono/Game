@@ -11,3 +11,4 @@ class Player():
         self.Party = []
         self.Box = []
         self.Saves = 0
+        self.Defeated_Monsters = []

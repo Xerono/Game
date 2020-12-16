@@ -14,7 +14,7 @@ def get_num_of_saves():
 
 def which_file_to_load(PlayerAndID, Savefile, Saves):
         [Player, ID] = PlayerAndID.split("_")
-        print("Which file to load from "+ str(Player) + " (" + str(ID) + ")?")
+        print("Which file to load from "+ str(Player) + " (" + str(ID) + ")? ('c' to cancel)")
         Saves.sort(reverse=True)
         for i in range(len(Saves)):
             itoprint = str(i+1)
@@ -22,6 +22,8 @@ def which_file_to_load(PlayerAndID, Savefile, Saves):
                 itoprint = "0" + itoprint
             print(itoprint + ": " + str(Saves[i]) + " | " + str(time.ctime(int(Saves[i].split(".")[0]))))
         sf = input()
+        if sf == 'c':
+            return False
         try:
             sfn = int(sf)
         except:
@@ -48,10 +50,12 @@ def load_game():
         i+=1
     savenum = 1
     if i>2:
-        print("Load which save?")
+        print("Load which save? 'c' to cancel")
         for key in Saves.keys():
             print(str(key) + ": " + str(Saves[key][0]) + " (" + str(Saves[key][1]) + ")")
         savenuminput = input()
+        if savenuminput == "c":
+              return False
         try:
             savenum = int(savenuminput)
         except:
@@ -74,8 +78,10 @@ def load_game():
                 Newest = int(Savefile.split(".")[0])
         yn = "i<0"
         if len(Saves)>1:
-            print("Load newest file? y/n")
+            print("Load newest file? y/n ('c' to cancel)")
             yn = input()
+        if yn == 'c':
+            return False
         if yn != "n":
             print("Loading newest file...")
             NewestFile = Savefilepath + "/" + str(Newest) + ".sav"
@@ -99,7 +105,7 @@ def save_game(Field, Player):
 
     StrLID = str(LongID)
     Savepath = os.getcwd() + "/Saves/"
-    if not os.path.exists(SaveFolder):
+    if not os.path.exists(Savepath):
         os.mkdir(Savepath)
     
     SaveFolder = Savepath + PName + "_" + StrLID + "/"
