@@ -47,12 +47,14 @@ def game_first_start():
     MapID = 1
 
     PlayerID = random.randint(0, 9999999999)
+    MonsterID = 1
+    MonsterLvl = 1
     
     Player = Classes.new_player(PlayerName, PlayerID, MapID, PlayerX, PlayerY, "Up", Journey_Start)
-    Starter = Classes.catch_monster(Classes.new_monster("Starter", 1), Player, StarterName, 1, Journey_Start)
+    Starter = Classes.catch_monster(Classes.new_monster(MonsterID, MonsterLvl), Player, StarterName, 1, Journey_Start)
     Player = Monster.put_monster_in_party(Starter, Player)
 
-    Field = Map.load_map(Player, MapID)
+    Field = Map.load_map(Player, (PlayerX, PlayerY), MapID)
     try:
         (Field, Player) = Map.set_player(Field, Player, MapID, PlayerX, PlayerY)
     except:
@@ -85,17 +87,6 @@ def main(MapScreen, Field, Player):
                         Map.draw_map(MapScreen, Field)
                     if event.key == pygame.K_s:
                         Saves.save_game(Field, Player)
-                    if event.key == pygame.K_a:
-                        #Debug
-                        try:
-                            Field = Map.set_monster(Field, 2, 2, "Up", Classes.new_monster("Monster1", 1))
-                            Map.draw_map(MapScreen, Field)
-                        except:
-                            print("Error in creating Monster after a press")
-                    if event.key == pygame.K_b:
-                        #Debug
-                            BattleScreen = pygame.display.set_mode((Screen_Height, Screen_Width))
-                            Map.draw_map(BattleScreen, Field)
 
     pygame.quit()
     exit()

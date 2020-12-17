@@ -4,9 +4,10 @@ NumberOfAttacks = 4
 
 
 class Monster:
-    def __init__(self, Species, MonsterID, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile):
+    def __init__(self, Species, MonsterID, Unique, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile):
         self.Species = Species
         self.MonsterID = MonsterID
+        self.Unique = (Unique == "True")
         self.Type1 = Type1
         if Type2 == "":
             self.Type2 = None
@@ -61,7 +62,8 @@ def load_monsters():
                     with open(Path_To_Monsters + "/" + ClassFile, "r") as file:
                         All_Lines = file.readlines()
                         Species = All_Lines[0].rstrip()
-                        MonsterID = All_Lines[1].rstrip()
+                        MonsterID = int(split[0])
+                        Unique = All_Lines[1].rstrip()
                         Type1 = All_Lines[2].rstrip()
                         Type2 = All_Lines[3].rstrip()
                         HP = All_Lines[4].rstrip()
@@ -79,7 +81,7 @@ def load_monsters():
                                 Attacks.append((int(lvl), attack))
                     except:
                         print("Error in loading attack file for monster file " + ClassFile)
-                    Monster = (Species, MonsterID, Type1, Type2, int(HP), int(Atk), int(Def), int(MAtk), int(MDef), int(Speed), Attacks)
+                    Monster = (Species, MonsterID, Unique, Type1, Type2, int(HP), int(Atk), int(Def), int(MAtk), int(MDef), int(Speed), Attacks)
                     Monsterlist.append(Monster)
                 except:
                     print("Error in loading monster file " + ClassFile)
@@ -89,10 +91,10 @@ def load_monsters():
 
 Monsterlist = load_monsters()
 
-def new_monster(MonsterSpecies, Level, Tile):
-    for (Species, M_ID, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks) in Monsterlist:
-        if Species == MonsterSpecies:
-            MonsterRet = Monster(Species, M_ID, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile)
+def new_monster(id, Level, Tile):
+    for (Species, M_ID, Unique, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks) in Monsterlist:
+        if id == M_ID:
+            MonsterRet = Monster(Species, M_ID, Unique, Type1, Type2, HP, Atk, Def, MAtk, MDef, Speed, Attacks, Level, Tile)
             break
     return MonsterRet
 

@@ -13,15 +13,20 @@ def new_player(name, id, mapid, x, y, direction, journey):
         print("Error - No tile found for object 'Player'")
     return player
     
-def new_monster(species, Level):
+def new_monster(id, Level):
     Tile = ""
     for obj in Map.Objects:
-        if obj.name == species:
-            Tile = obj
+        try:
+            objid = int(obj.name)
+            monid = int(id)
+            if objid == monid:
+                Tile = obj
+        except:
+            pass
     if Tile:
-        Monster = Monsters.new_monster(species, Level, Tile)
+        Monster = Monsters.new_monster(id, Level, Tile)
     else:
-        print("Error - No tile found for object '" + str(species) + "'")
+        print("Error - No tile found for monster '" + str(id) + "'")
     return Monster
 
 def catch_monster(Monster, Player, Nick, Loc, DT):
